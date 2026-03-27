@@ -108,7 +108,7 @@ The project is deployed on **Vercel**. Push to the main branch to trigger an aut
 
 **Amaan Asif Mulani**
 
-- 📧 [Amaanmulani9@gmail.com](mailto:Amaanmulani9@gmail.com)
+- 📧 [amaanmulani9@gmail.com](mailto:amaanmulani9@gmail.com)
 - 💼 [LinkedIn](https://www.linkedin.com/in/amaan-m-b51773312)
 - 🐙 [GitHub](https://github.com/amaan0920)
 - 📸 [Instagram](https://www.instagram.com/amaan.mulani_)
