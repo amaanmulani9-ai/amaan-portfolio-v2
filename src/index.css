@@ -13,6 +13,16 @@
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html { overflow-x: hidden; scroll-behavior: auto; }
+html, body { min-width: 320px; }
+
+img, svg, video, canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+button, input, textarea, select {
+  font: inherit;
+}
 
 @media (hover: hover) and (pointer: fine) {
   *, *::before, *::after { cursor: none !important; }
@@ -28,6 +38,7 @@ body {
   font-family: 'DM Sans', sans-serif;
   overflow-x: hidden;
   cursor: none;
+  -webkit-text-size-adjust: 100%;
 }
 ::selection { background: var(--lime); color: var(--charcoal); }
 ::-webkit-scrollbar { width: 3px; }
@@ -121,4 +132,20 @@ body::after {
 
 @media (max-width: 768px) {
   body { cursor: auto; }
+  .display-xl {
+    font-size: clamp(64px, 24vw, 112px);
+    line-height: 0.92;
+  }
+  .display-lg {
+    font-size: clamp(40px, 15vw, 72px);
+    line-height: 0.94;
+  }
+  .body-lg {
+    font-size: 17px;
+    line-height: 1.75;
+  }
+  .label {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+  }
 }

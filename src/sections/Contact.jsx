@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -11,6 +11,7 @@ import {
   resumeHighlights,
   socials,
 } from "../constants";
+import isMobile from "../utils/isMobile";
 
 const ICONS = {
   GitHub: (
@@ -31,7 +32,7 @@ const ICONS = {
 };
 
 const HANDLES = {
-  GitHub: "amaan0920",
+  GitHub: "amaanmulani9-ai",
   LinkedIn: "amaan-m-b51773312",
   Instagram: "@amaan.mulani_",
 };
@@ -137,6 +138,7 @@ const SocialCard = ({ social }) => {
                 letterSpacing: "0.1em",
                 textTransform: "uppercase",
                 color: "rgba(240,237,230,0.3)",
+                overflowWrap: "anywhere",
               }}
             >
               {HANDLES[social.name]}
@@ -185,7 +187,7 @@ const ContactCard = ({ method }) => (
     }}
   >
     <p className="label text-muted mb-3">{method.label}</p>
-    <p style={{ color: "#F0EDE6", lineHeight: 1.7 }}>{method.value}</p>
+    <p style={{ color: "#F0EDE6", lineHeight: 1.7, overflowWrap: "anywhere" }}>{method.value}</p>
   </a>
 );
 
@@ -197,26 +199,42 @@ const Contact = () => {
   const dotRef = useRef(null);
   const infoSectionRef = useRef(null);
   const footerRef = useRef(null);
+  const [mobileLayout, setMobileLayout] = useState(() =>
+    typeof window !== "undefined" ? isMobile() : false
+  );
+
+  useEffect(() => {
+    const onResize = () => {
+      setMobileLayout(isMobile());
+    };
+
+    onResize();
+    window.addEventListener("resize", onResize);
+
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
 
   useGSAP(() => {
-    ScrollTrigger.create({
-      trigger: pinnedRef.current,
-      start: "top top",
-      end: "+=700",
-      pin: true,
-      pinSpacing: true,
-    });
-
-    gsap.to(bigTextRef.current, {
-      yPercent: -12,
-      ease: "none",
-      scrollTrigger: {
+    if (!mobileLayout) {
+      ScrollTrigger.create({
         trigger: pinnedRef.current,
         start: "top top",
         end: "+=700",
-        scrub: 1.5,
-      },
-    });
+        pin: true,
+        pinSpacing: true,
+      });
+
+      gsap.to(bigTextRef.current, {
+        yPercent: -12,
+        ease: "none",
+        scrollTrigger: {
+          trigger: pinnedRef.current,
+          start: "top top",
+          end: "+=700",
+          scrub: 1.5,
+        },
+      });
+    }
 
     gsap.to(dotRef.current, {
       scale: 1.6,
@@ -261,7 +279,7 @@ const Contact = () => {
         }
       );
     }
-  });
+  }, { dependencies: [mobileLayout] });
 
   return (
     <section
@@ -273,7 +291,7 @@ const Contact = () => {
     >
       <div
         ref={pinnedRef}
-        className="min-h-screen flex flex-col justify-between py-16 px-8 md:px-16 overflow-hidden"
+        className="flex min-h-[100svh] flex-col justify-between overflow-hidden px-5 py-12 pt-24 sm:px-8 md:min-h-screen md:px-16 md:py-16"
       >
         <Marquee
           items={marqueeTech}
@@ -281,7 +299,7 @@ const Contact = () => {
           style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(16px,2vw,24px)" }}
         />
 
-        <div ref={bigTextRef} className="flex-1 flex items-center py-12" style={{ zIndex: 1 }}>
+        <div ref={bigTextRef} className="flex min-h-[45svh] flex-1 items-center py-10 md:py-12" style={{ zIndex: 1 }}>
           <div>
             <SplitLines
               text={`LET'S\nCONNECT.`}
@@ -289,7 +307,7 @@ const Contact = () => {
               trigger={false}
               delay={0}
             />
-            <div className="mt-10 flex items-center gap-4">
+            <div className="mt-8 flex flex-wrap items-center gap-3 md:mt-10 md:gap-4">
               <div
                 ref={dotRef}
                 className="w-3 h-3 rounded-full"
@@ -300,7 +318,7 @@ const Contact = () => {
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6" style={{ zIndex: 1 }}>
+        <div className="flex flex-col items-start justify-between gap-5 md:flex-row md:items-end md:gap-6" style={{ zIndex: 1 }}>
           <div className="flex flex-wrap gap-4">
             {socials.map((social) => (
               <a
@@ -326,7 +344,7 @@ const Contact = () => {
           </div>
           <a
             href={`mailto:${profile.email}`}
-            className="label transition-colors duration-300"
+            className="label break-all transition-colors duration-300"
             style={{ color: "rgba(240,237,230,0.3)" }}
             onMouseEnter={(event) => {
               event.target.style.color = "var(--lime)";
@@ -343,16 +361,16 @@ const Contact = () => {
 
       <div
         ref={infoSectionRef}
-        className="py-24 px-8 md:px-16"
+        className="px-5 py-20 sm:px-8 md:px-16 md:py-24"
         style={{ borderTop: "1px solid rgba(240,237,230,0.06)" }}
       >
-        <div className="flex items-center gap-4 mb-16">
+        <div className="mb-12 flex items-center gap-4 md:mb-16">
           <span className="index-num">05</span>
           <div className="rule flex-1" />
           <span className="label text-muted">Contact</span>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-24">
           <div>
             <h3
               className="text-offwhite uppercase mb-6"
@@ -371,7 +389,7 @@ const Contact = () => {
               <div style={{ width: 20, height: 1, background: "var(--lime)" }} />
               <a
                 href={`mailto:${profile.email}`}
-                className="label transition-colors duration-300"
+                className="label break-all transition-colors duration-300"
                 style={{ color: "rgba(240,237,230,0.4)" }}
                 onMouseEnter={(event) => {
                   event.target.style.color = "var(--lime)";
@@ -455,7 +473,7 @@ const Contact = () => {
 
       <div
         ref={footerRef}
-        className="px-8 md:px-16 py-8 flex flex-col md:flex-row items-center justify-between gap-4"
+        className="flex flex-col items-center justify-between gap-3 px-5 py-8 text-center sm:px-8 md:flex-row md:gap-4 md:px-16 md:text-left"
         style={{ borderTop: "1px solid rgba(240,237,230,0.06)" }}
       >
         <span className="label text-muted">© 2026 {profile.fullName}</span>

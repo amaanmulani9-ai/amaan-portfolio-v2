@@ -4,17 +4,17 @@ export const profile = {
   lastName: "Mulani",
   fullName: "Amaan Asif Mulani",
   title: "Entry-level Web Developer and Full-Stack Developer",
-  availability: "Open to internships and entry-level roles",
-  badge: "M.Sc. IT - Pursuing",
+  availability: "Open to internships, entry-level roles, and project collaborations",
+  badge: "M.Sc. IT + Live Projects",
   summary:
-    "Entry-level Web Developer and Full-Stack Developer with hands-on experience in Python, Django, React, and AWS cloud services. Skilled in building responsive web applications, developing RESTful APIs, and deploying scalable solutions on AWS. Experienced in database management, backend logic, and cloud infrastructure. Currently pursuing an M.Sc. in Information Technology.",
+    "Entry-level Web Developer and Full-Stack Developer with hands-on experience in Python automation, React and Vite interfaces, Next.js applications, and TypeScript-based frontend work. Skilled in building responsive web applications, API-backed tools, and desktop experiences using FastAPI, PyQt, Tailwind CSS, and modern JavaScript. Comfortable with backend logic, interface development, and practical project delivery. Currently pursuing an M.Sc. in Information Technology.",
   shortSummary:
-    "Building responsive web apps, REST APIs, and AWS-backed solutions with Python, Django, React, and strong database fundamentals.",
+    "Building responsive web apps, API-backed tools, and desktop experiences with Python, React, Next.js, FastAPI, and modern frontend tooling.",
   email: "Amaanmulani9@gmail.com",
   phone: "+91 93248 32187",
   location: "Malad (E), Mumbai 97, India",
   languages: "English, Hindi, Marathi",
-  githubUser: "amaan0920",
+  githubUser: "amaanmulani9-ai",
   portrait: `${import.meta.env.BASE_URL}images/6d716bb9-8ebd-4609-a01f-048fb89038ee.png`,
   resumeHref: "mailto:Amaanmulani9@gmail.com?subject=Resume%20Request",
   resumeLabel: "Request Resume",
@@ -23,16 +23,16 @@ export const profile = {
 };
 
 export const heroRoles = [
-  "ENTRY-LEVEL WEB DEVELOPER",
-  "FULL-STACK DEVELOPER",
-  "PYTHON + DJANGO BUILDER",
-  "AWS-CURIOUS ENGINEER",
+  "ENTRY-LEVEL FULL-STACK DEVELOPER",
+  "PYTHON AUTOMATION BUILDER",
+  "REACT + NEXT.JS DEVELOPER",
+  "FASTAPI + FRONTEND ENGINEER",
 ];
 
 export const heroPoints = [
-  "Hands-on experience in Python, Django, React, and AWS cloud services.",
-  "Builds responsive web applications, RESTful APIs, and database-backed systems.",
-  "Project work spans AI diagnosis, finance tracking, e-commerce, and robotics.",
+  "Hands-on work across Python automation, React and Vite interfaces, Next.js builds, and TypeScript-based frontend projects.",
+  "Builds responsive web experiences, desktop tools, and API-backed systems with FastAPI, Tailwind CSS, PyQt, and modern JavaScript.",
+  "Recent projects include JARVIS desktop automation, a medical store platform, portfolio rebuilds, and fan-experience web apps.",
 ];
 
 export const professionalFacts = [
@@ -54,12 +54,12 @@ export const aboutPanels = [
   {
     title: "Development profile",
     description:
-      "Comfortable working across backend logic, responsive interfaces, API integration, and deployment-oriented thinking. The profile highlights practical work in Python, Django, Flask, PHP, React, MySQL, and AWS-backed development.",
+      "Comfortable working across frontend interfaces, Python automation, API integration, and shipping-focused development. The profile now reflects practical work in React, Next.js, Vite, FastAPI, PyQt, Tailwind CSS, TypeScript, and modern JavaScript.",
   },
   {
     title: "Hands-on project range",
     description:
-      "Project experience includes AI-based diagnosis systems, finance tracking, shopping and jewellery management systems, and Arduino-based robotics with fire detection and SMS alerts.",
+      "Recent project work includes desktop automation with JARVIS, a medical store platform, portfolio rebuilds, fan-experience web apps, and API-backed tools that continue evolving through live GitHub updates.",
   },
 ];
 
@@ -159,28 +159,28 @@ export const experience = [
 export const achievements = [
   {
     icon: "01",
-    title: "Full-stack profile",
-    sub: "Python, Django, Flask, React, PHP, and AWS",
+    title: "Python automation",
+    sub: "Desktop flows, utility scripting, voice logic, and practical tooling",
   },
   {
     icon: "02",
-    title: "Project range",
-    sub: "AI diagnosis, finance tools, shop systems, and robotics",
+    title: "Modern frontend",
+    sub: "React, Next.js, Vite, TypeScript, Tailwind CSS, and responsive UI work",
   },
   {
     icon: "03",
-    title: "Cloud mindset",
-    sub: "REST APIs, databases, deployment, and scalable thinking",
+    title: "API-backed systems",
+    sub: "FastAPI, auth flows, structured backend logic, and project integrations",
   },
   {
     icon: "04",
-    title: "Hardware builds",
-    sub: "Arduino, GSM modules, sensors, and automation logic",
+    title: "Live project shipping",
+    sub: "Portfolio rebuilds, deployed demos, and public GitHub repository updates",
   },
   {
     icon: "05",
     title: "Practical delivery",
-    sub: "Responsive interfaces backed by working business logic",
+    sub: "Clean interfaces, usable workflows, and source-backed projects that keep evolving",
   },
 ];
 
@@ -197,29 +197,31 @@ export const certifications = [
 
 export const skills = [
   "Python",
-  "PHP",
-  "Java",
-  "ReactJS",
-  "Django",
-  "Flask",
+  "JavaScript",
+  "TypeScript",
+  "React",
+  "Next.js",
+  "Vite",
+  "FastAPI",
+  "PyQt",
+  "Tailwind CSS",
   "REST APIs",
   "HTML5",
   "CSS3",
-  "JavaScript (ES6)",
-  "MySQL",
-  "PostgreSQL",
+  "Responsive UI",
+  "Frontend Architecture",
   "MongoDB",
-  "MS SQL",
-  "AWS",
+  "Authentication Flows",
+  "API Integration",
+  "Vercel",
   "Git",
   "GitHub",
   "Linux",
-  "Arduino",
-  "Raspberry Pi",
+  "Desktop Automation",
 ];
 
 export const socials = [
-  { name: "GitHub", href: "https://github.com/amaan0920" },
+  { name: "GitHub", href: "https://github.com/amaanmulani9-ai" },
   {
     name: "Instagram",
     href: "https://www.instagram.com/amaan.mulani_?igsh=b3E2bWdyNjZldndn",

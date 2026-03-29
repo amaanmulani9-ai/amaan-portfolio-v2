@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -23,11 +23,23 @@ const About = () => {
   const imgWrapRef = useRef(null);
   const statsRef = useRef([]);
   const counterRefs = useRef([]);
+  const [mobileLayout, setMobileLayout] = useState(() =>
+    typeof window !== "undefined" ? isMobile() : false
+  );
+
+  useEffect(() => {
+    const onResize = () => {
+      setMobileLayout(isMobile());
+    };
+
+    onResize();
+    window.addEventListener("resize", onResize);
+
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
 
   useGSAP(() => {
-    const mobile = isMobile();
-
-    if (!mobile) {
+    if (!mobileLayout) {
       gsap.to(sectionRef.current, {
         scale: 0.93,
         scrollTrigger: {
@@ -50,7 +62,7 @@ const About = () => {
       }
     );
 
-    if (!mobile) {
+    if (!mobileLayout) {
       gsap.to(imgRef.current, {
         yPercent: -15,
         ease: "none",
@@ -146,20 +158,26 @@ const About = () => {
         },
       }
     );
-  });
+  }, { dependencies: [mobileLayout] });
 
   return (
     <section
       id="about"
       ref={sectionRef}
-      className="relative py-24 px-8 md:px-16 overflow-hidden"
+      className="relative overflow-hidden px-5 py-20 sm:px-8 md:px-16 md:py-24"
       style={{
         background:
           "linear-gradient(180deg, rgba(15,8,3,0.985) 0%, rgba(6,4,2,0.99) 100%)",
         borderRadius: "0 0 48px 48px",
       }}
     >
-      <GradientOrb x="90%" y="20%" size={600} color="#ffb347" opacity={0.035} />
+      <GradientOrb
+        x="90%"
+        y="20%"
+        size={mobileLayout ? 360 : 600}
+        color="#ffb347"
+        opacity={0.035}
+      />
 
       <div className="flex items-center gap-4 mb-4">
         <span className="index-num">02</span>
@@ -170,11 +188,11 @@ const About = () => {
       <TextScramble
         text="Professional Summary"
         tag="h2"
-        className="about-heading display-lg text-offwhite uppercase mb-16"
+        className="about-heading display-lg text-offwhite uppercase mb-12 md:mb-16"
         scrambleOnMount
       />
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+      <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-2 lg:gap-24">
         <div>
           <div
             ref={imgWrapRef}
@@ -197,14 +215,14 @@ const About = () => {
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-3 mt-4">
+          <div className="mt-4 grid grid-cols-2 gap-3">
             {aboutStats.map((stat, index) => (
               <div
                 key={stat.label}
                 ref={(element) => {
                   statsRef.current[index] = element;
                 }}
-                className="p-5 rounded-xl"
+                className="rounded-xl p-4 md:p-5"
                 style={{
                   background: "var(--dim)",
                   border: "1px solid rgba(240,237,230,0.07)",
@@ -216,7 +234,7 @@ const About = () => {
                   }}
                   style={{
                     fontFamily: "'Bebas Neue', sans-serif",
-                    fontSize: 46,
+                    fontSize: mobileLayout ? 34 : 46,
                     color: "var(--lime)",
                     lineHeight: 1,
                   }}
@@ -240,12 +258,13 @@ const About = () => {
           </div>
         </div>
 
-        <div className="flex flex-col gap-12">
-          <div
-            className="overflow-hidden select-none pointer-events-none"
-            style={{ marginLeft: "-8vw", marginRight: "-8vw" }}
-          >
-            <div ref={driftRef} className="whitespace-nowrap">
+        <div className="flex flex-col gap-10 md:gap-12">
+          {!mobileLayout && (
+            <div
+              className="overflow-hidden select-none pointer-events-none"
+              style={{ marginLeft: "-8vw", marginRight: "-8vw" }}
+            >
+              <div ref={driftRef} className="whitespace-nowrap">
               <span
                 style={{
                   fontFamily: "'Bebas Neue', sans-serif",
@@ -257,9 +276,10 @@ const About = () => {
               >
                 PYTHON · DJANGO · REACT · AWS · APIS · DATABASES · ROBOTICS ·
                 DEPLOYMENT · PYTHON · DJANGO · REACT · AWS ·
-              </span>
+                </span>
+              </div>
             </div>
-          </div>
+          )}
 
           <SplitLines
             text={profile.summary}
@@ -284,11 +304,11 @@ const About = () => {
               {professionalFacts.map((fact) => (
                 <div
                   key={fact.label}
-                className="rounded-xl p-5"
-                style={{
-                  background: "var(--dim)",
-                  border: "1px solid rgba(240,237,230,0.07)",
-                }}
+                  className="rounded-xl p-4 md:p-5"
+                  style={{
+                    background: "var(--dim)",
+                    border: "1px solid rgba(240,237,230,0.07)",
+                  }}
                 >
                   <p className="label text-muted mb-3">{fact.label}</p>
                   <p style={{ color: "#F0EDE6", lineHeight: 1.7 }}>{fact.value}</p>
@@ -314,11 +334,11 @@ const About = () => {
               {aboutPanels.map((panel) => (
                 <div
                   key={panel.title}
-                className="rounded-xl p-5"
-                style={{
-                  background: "var(--dim)",
-                  border: "1px solid rgba(240,237,230,0.07)",
-                }}
+                  className="rounded-xl p-4 md:p-5"
+                  style={{
+                    background: "var(--dim)",
+                    border: "1px solid rgba(240,237,230,0.07)",
+                  }}
                 >
                   <p
                     style={{
@@ -359,10 +379,10 @@ const About = () => {
                   className="skill-pill"
                   style={{
                     fontFamily: "'DM Sans', sans-serif",
-                    fontSize: 13,
+                    fontSize: mobileLayout ? 12 : 13,
                     letterSpacing: "0.1em",
                     textTransform: "uppercase",
-                    padding: "9px 20px",
+                    padding: mobileLayout ? "8px 14px" : "9px 20px",
                     borderRadius: 999,
                     background: "var(--dim)",
                     border: "1px solid rgba(240,237,230,0.1)",

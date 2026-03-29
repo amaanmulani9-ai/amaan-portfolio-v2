@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -26,8 +26,23 @@ const Hero = () => {
   const scrollRef = useRef(null);
   const gridRef = useRef(null);
   const badgeRef = useRef(null);
+  const mobileMetaRef = useRef(null);
   const statusRef = useRef(null);
   const socialsRef = useRef(null);
+  const [mobileLayout, setMobileLayout] = useState(() =>
+    typeof window !== "undefined" ? isMobile() : false
+  );
+
+  useEffect(() => {
+    const onResize = () => {
+      setMobileLayout(isMobile());
+    };
+
+    onResize();
+    window.addEventListener("resize", onResize);
+
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
 
   useEffect(() => {
     let roleIndex = 0;
@@ -78,8 +93,12 @@ const Hero = () => {
       { scaleY: 1, duration: 1.6, stagger: 0.05, ease: "power3.inOut" }
     );
 
+    const metaTargets = mobileLayout
+      ? [mobileMetaRef.current]
+      : [statusRef.current, badgeRef.current];
+
     timeline.fromTo(
-      [statusRef.current, badgeRef.current],
+      metaTargets.filter(Boolean),
       { opacity: 0, y: -16 },
       { opacity: 1, y: 0, duration: 0.7, stagger: 0.1, ease: "power3.out" },
       "-=0.9"
@@ -120,14 +139,16 @@ const Hero = () => {
       "-=0.6"
     );
 
-    timeline.fromTo(
-      scrollRef.current,
-      { opacity: 0 },
-      { opacity: 1, duration: 0.6 },
-      "-=0.3"
-    );
+    if (scrollRef.current) {
+      timeline.fromTo(
+        scrollRef.current,
+        { opacity: 0 },
+        { opacity: 1, duration: 0.6 },
+        "-=0.3"
+      );
+    }
 
-    if (!isMobile()) {
+    if (!mobileLayout) {
       gsap.to(nameRef.current, {
         yPercent: -30,
         ease: "none",
@@ -173,20 +194,22 @@ const Hero = () => {
       });
     }
 
-    gsap.to(scrollRef.current, {
-      opacity: 0,
-      ease: "none",
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top top",
-        end: "25% top",
-        scrub: true,
-      },
-    });
-  });
+    if (scrollRef.current) {
+      gsap.to(scrollRef.current, {
+        opacity: 0,
+        ease: "none",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "25% top",
+          scrub: true,
+        },
+      });
+    }
+  }, { dependencies: [mobileLayout] });
 
   useEffect(() => {
-    if (isMobile()) return;
+    if (mobileLayout) return;
 
     const section = sectionRef.current;
     if (!section) return;
@@ -221,46 +244,81 @@ const Hero = () => {
       section.removeEventListener("mousemove", onMove);
       section.removeEventListener("mouseleave", onLeave);
     };
-  }, []);
+  }, [mobileLayout]);
 
   return (
     <section
       id="home"
       ref={sectionRef}
-      className="relative min-h-screen flex flex-col justify-end pb-16 px-8 md:px-16 pt-32 overflow-hidden"
+      className="relative min-h-[100svh] flex flex-col justify-end pb-12 pt-28 px-5 sm:px-8 md:min-h-screen md:pb-16 md:px-16 md:pt-32 overflow-hidden"
       style={{ transformStyle: "preserve-3d" }}
     >
-      <GradientOrb x="15%" y="25%" size={700} color="#ffb347" opacity={0.04} />
-      <GradientOrb x="80%" y="70%" size={500} color="#ffd977" opacity={0.03} />
+      <GradientOrb x="15%" y="25%" size={mobileLayout ? 420 : 700} color="#ffb347" opacity={0.04} />
+      <GradientOrb x="80%" y="70%" size={mobileLayout ? 320 : 500} color="#ffd977" opacity={0.03} />
 
       <div ref={gridRef} className="absolute inset-0 pointer-events-none flex">
-        {[...Array(9)].map((_, index) => (
+        {[...Array(mobileLayout ? 5 : 9)].map((_, index) => (
           <div
             key={index}
             className="absolute top-0 bottom-0 w-px"
             style={{
-              left: `${(index + 1) * 10}%`,
+              left: `${((index + 1) * 100) / (mobileLayout ? 6 : 10)}%`,
               background: "rgba(240,237,230,0.035)",
             }}
           />
         ))}
       </div>
 
-      <div ref={statusRef} className="absolute top-24 left-8 md:left-16 flex items-center gap-2">
-        <span
-          className="w-2 h-2 rounded-full"
-          style={{
-            background: "var(--lime)",
-            boxShadow: "0 0 8px rgba(244,194,79,0.9)",
-            animation: "hpulse 2s infinite",
-          }}
-        />
-        <span className="label text-muted">{profile.availability}</span>
-      </div>
+      {!mobileLayout && (
+        <div ref={statusRef} className="absolute top-24 left-8 md:left-16 flex items-center gap-2">
+          <span
+            className="w-2 h-2 rounded-full"
+            style={{
+              background: "var(--lime)",
+              boxShadow: "0 0 8px rgba(244,194,79,0.9)",
+              animation: "hpulse 2s infinite",
+            }}
+          />
+          <span className="label text-muted">{profile.availability}</span>
+        </div>
+      )}
 
-      <div ref={badgeRef} className="absolute top-24 right-8 md:right-16 label text-muted">
-        {profile.badge}
-      </div>
+      {!mobileLayout && (
+        <div ref={badgeRef} className="absolute top-24 right-8 md:right-16 label text-muted">
+          {profile.badge}
+        </div>
+      )}
+
+      {mobileLayout && (
+        <div ref={mobileMetaRef} className="relative z-10 mb-8 flex flex-wrap gap-3">
+          <div
+            className="inline-flex items-center gap-2 rounded-full px-3 py-2"
+            style={{
+              background: "rgba(244,194,79,0.08)",
+              border: "1px solid rgba(255,158,74,0.2)",
+            }}
+          >
+            <span
+              className="w-2 h-2 rounded-full"
+              style={{
+                background: "var(--lime)",
+                boxShadow: "0 0 8px rgba(244,194,79,0.9)",
+              }}
+            />
+            <span className="label text-muted">{profile.availability}</span>
+          </div>
+          <div
+            className="inline-flex items-center rounded-full px-3 py-2 label"
+            style={{
+              background: "rgba(240,237,230,0.03)",
+              border: "1px solid rgba(240,237,230,0.08)",
+              color: "rgba(240,237,230,0.5)",
+            }}
+          >
+            {profile.badge}
+          </div>
+        </div>
+      )}
 
       <div className="relative select-none mb-0" style={{ zIndex: 1 }}>
         <div style={{ overflow: "hidden" }} ref={nameRef}>
@@ -290,7 +348,7 @@ const Hero = () => {
 
       <div
         ref={descRef}
-        className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)_auto] gap-8 items-start"
+        className="grid grid-cols-1 gap-10 items-start lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)_auto] lg:gap-8"
         style={{ zIndex: 1 }}
       >
         <div>
@@ -301,7 +359,8 @@ const Hero = () => {
               fontFamily: "'Bebas Neue', sans-serif",
               fontSize: "clamp(20px,2.8vw,34px)",
               color: "var(--lime)",
-              minHeight: "1.4em",
+              minHeight: mobileLayout ? "1.8em" : "1.4em",
+              maxWidth: mobileLayout ? "16rem" : "none",
             }}
           >
             <span ref={roleRef} />
@@ -331,15 +390,16 @@ const Hero = () => {
           </ul>
         </div>
 
-        <div ref={socialsRef} className="flex flex-col gap-4 shrink-0">
+        <div ref={socialsRef} className="flex flex-wrap gap-3 shrink-0 md:flex-col md:gap-4">
           {actionLinks.map((link) => (
             <MagneticBtn key={link.name} strength={0.4}>
               <a
                 href={link.href}
                 target={link.href.startsWith("http") ? "_blank" : "_self"}
                 rel={link.href.startsWith("http") ? "noreferrer" : undefined}
-                className="label block px-4 py-2 rounded-full transition-all duration-300"
+                className="label block rounded-full transition-all duration-300"
                 style={{
+                  padding: mobileLayout ? "11px 14px" : "8px 16px",
                   color: "rgba(240,237,230,0.35)",
                   border: "1px solid rgba(240,237,230,0.08)",
                   background: "rgba(240,237,230,0.02)",
@@ -364,25 +424,27 @@ const Hero = () => {
         </div>
       </div>
 
-      <div
-        ref={scrollRef}
-        className="absolute bottom-8 left-1/2 flex flex-col items-center gap-2"
-        style={{ transform: "translateX(-50%)", zIndex: 1 }}
-      >
-        <div className="w-px h-14 overflow-hidden" style={{ background: "rgba(240,237,230,0.08)" }}>
-          <div
-            className="w-full"
-            style={{
-              height: "50%",
-              background: "var(--lime)",
-              animation: "scrollDrop 2s ease-in-out infinite",
-            }}
-          />
+      {!mobileLayout && (
+        <div
+          ref={scrollRef}
+          className="absolute bottom-8 left-1/2 flex flex-col items-center gap-2"
+          style={{ transform: "translateX(-50%)", zIndex: 1 }}
+        >
+          <div className="w-px h-14 overflow-hidden" style={{ background: "rgba(240,237,230,0.08)" }}>
+            <div
+              className="w-full"
+              style={{
+                height: "50%",
+                background: "var(--lime)",
+                animation: "scrollDrop 2s ease-in-out infinite",
+              }}
+            />
+          </div>
+          <span className="label text-muted" style={{ fontSize: 9, letterSpacing: "0.3em" }}>
+            SCROLL
+          </span>
         </div>
-        <span className="label text-muted" style={{ fontSize: 9, letterSpacing: "0.3em" }}>
-          SCROLL
-        </span>
-      </div>
+      )}
 
       <style>{`
         @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }

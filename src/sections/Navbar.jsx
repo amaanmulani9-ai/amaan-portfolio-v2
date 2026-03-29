@@ -4,6 +4,7 @@ import gsap from "gsap";
 import { Link } from "react-scroll";
 import MagneticBtn from "../components/MagneticBtn";
 import { profile, socials } from "../constants";
+import isMobile from "../utils/isMobile";
 
 const sections = [
   { id: "home", label: "home" },
@@ -23,6 +24,9 @@ const Navbar = () => {
   const iconTl = useRef(null);
   const [open, setOpen] = useState(false);
   const [visible, setVisible] = useState(true);
+  const [mobileLayout, setMobileLayout] = useState(() =>
+    typeof window !== "undefined" ? isMobile() : false
+  );
 
   useGSAP(() => {
     gsap.set(panelRef.current, { yPercent: -100 });
@@ -81,6 +85,17 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
+    const onResize = () => {
+      setMobileLayout(isMobile());
+    };
+
+    onResize();
+    window.addEventListener("resize", onResize);
+
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  useEffect(() => {
     let lastScroll = 0;
 
     const onScroll = () => {
@@ -92,6 +107,18 @@ const Navbar = () => {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    const overflowValue = open && mobileLayout ? "hidden" : "";
+
+    document.body.style.overflow = overflowValue;
+    document.documentElement.style.overflow = overflowValue;
+
+    return () => {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+    };
+  }, [open, mobileLayout]);
 
   const toggle = () => {
     if (open) {
@@ -109,13 +136,14 @@ const Navbar = () => {
     <>
       <div
         ref={panelRef}
-        className="fixed inset-0 z-50 flex flex-col px-8 md:px-16"
+        className="fixed inset-0 z-50 flex flex-col px-5 sm:px-8 md:px-16"
         style={{
           background:
             "linear-gradient(180deg, rgba(4,2,1,0.992) 0%, rgba(12,7,3,0.992) 100%)",
-          paddingTop: 88,
-          paddingBottom: 40,
-          overflow: "hidden",
+          paddingTop: mobileLayout ? 76 : 88,
+          paddingBottom: mobileLayout ? 28 : 40,
+          overflowY: "auto",
+          overflowX: "hidden",
         }}
       >
         <nav className="flex flex-col justify-center flex-1 gap-0 min-h-0">
@@ -134,16 +162,19 @@ const Navbar = () => {
                 offset={-60}
                 duration={1600}
                 onClick={toggle}
-                className="group flex items-center justify-between cursor-none"
-                style={{ padding: "12px 0" }}
-                data-cursor
+                className="group flex items-center justify-between gap-4"
+                style={{
+                  padding: mobileLayout ? "14px 0" : "12px 0",
+                  cursor: mobileLayout ? "pointer" : "none",
+                }}
+                data-cursor={!mobileLayout ? true : undefined}
               >
                 <span className="index-num mr-6 shrink-0">{String(index + 1).padStart(2, "0")}</span>
                 <span
                   className="flex-1 uppercase transition-colors duration-300 group-hover:text-lime"
                   style={{
                     fontFamily: "'Bebas Neue', sans-serif",
-                    fontSize: "clamp(28px, 5.5vw, 72px)",
+                    fontSize: "clamp(24px, 11vw, 72px)",
                     lineHeight: 1,
                     color: "#F0EDE6",
                   }}
@@ -196,7 +227,7 @@ const Navbar = () => {
       </div>
 
       <header
-        className="fixed top-0 left-0 right-0 z-[60] flex items-center justify-between px-8 md:px-16 py-5 transition-transform duration-500"
+        className="fixed top-0 left-0 right-0 z-[60] flex items-center justify-between px-5 sm:px-8 md:px-16 py-4 md:py-5 transition-transform duration-500"
         style={{
           transform: visible ? "translateY(0)" : "translateY(-110%)",
           background: "transparent",
@@ -213,9 +244,9 @@ const Navbar = () => {
             style={{
               background: open ? "var(--lime)" : "var(--dim)",
               borderColor: open ? "var(--lime)" : "rgba(240,237,230,0.1)",
-              cursor: "none",
+              cursor: mobileLayout ? "pointer" : "none",
             }}
-            data-cursor
+            data-cursor={!mobileLayout ? true : undefined}
           >
             <span
               ref={iconTopRef}

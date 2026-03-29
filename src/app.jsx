@@ -2,7 +2,7 @@ import ReactLenis from "lenis/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import isMobile from "./utils/isMobile";
 
 import Preloader      from "./components/Preloader";
@@ -20,6 +20,20 @@ gsap.registerPlugin(ScrollTrigger);
 const App = () => {
   const orbRef    = useRef(null);
   const [preloadDone, setPreloadDone] = useState(false);
+  const [mobileLayout, setMobileLayout] = useState(() => isMobile());
+
+  useEffect(() => {
+    const handleResize = () => {
+      setMobileLayout(isMobile());
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   useGSAP(() => {
     if (!preloadDone) return;
@@ -34,7 +48,7 @@ const App = () => {
     });
 
     // Global orb travels right → left as user scrolls
-    if (!isMobile()) {
+    if (!mobileLayout) {
       gsap.to(orbRef.current, {
         left: "-10%",
         top: "70%",
@@ -47,7 +61,7 @@ const App = () => {
         },
       });
     }
-  }, { dependencies: [preloadDone] });
+  }, { dependencies: [preloadDone, mobileLayout] });
 
   return (
     <>
@@ -56,8 +70,24 @@ const App = () => {
         <Preloader onComplete={() => setPreloadDone(true)} />
       )}
 
-      <ReactLenis root options={{ lerp: 0.07, duration: 1.5, smoothTouch: false, prevent: isMobile() ? () => true : undefined }}>
-        <ScrollProgress />
+      <ReactLenis
+        root
+        options={
+          mobileLayout
+            ? {
+                duration: 1,
+                smoothWheel: false,
+                syncTouch: true,
+                touchMultiplier: 1,
+              }
+            : {
+                lerp: 0.07,
+                duration: 1.5,
+                smoothTouch: false,
+              }
+        }
+      >
+        {!mobileLayout && <ScrollProgress />}
 
         {/* Page cover */}
         <div id="page-cover" style={{
@@ -72,10 +102,11 @@ const App = () => {
           ref={orbRef}
           style={{
             position: "fixed",
-            left: "85%",
-            top: "20%",
+            left: mobileLayout ? "68%" : "85%",
+            top: mobileLayout ? "18%" : "20%",
             transform: "translate(-50%, -50%)",
-            width: 800, height: 800,
+            width: mobileLayout ? 440 : 800,
+            height: mobileLayout ? 440 : 800,
             borderRadius: "50%",
             background:
               "radial-gradient(circle, rgba(255,191,73,0.11) 0%, rgba(255,140,61,0.04) 42%, transparent 70%)",

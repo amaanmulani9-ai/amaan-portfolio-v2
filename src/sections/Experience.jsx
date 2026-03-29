@@ -9,7 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const TimelineCard = ({ item }) => (
   <>
-    <div className="flex items-start justify-between gap-2 mb-3">
+    <div className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
       <div>
         <span className="index-num block mb-2">{item.id}</span>
         <h3
@@ -27,7 +27,7 @@ const TimelineCard = ({ item }) => (
         </p>
       </div>
       <span
-        className="label px-2 py-1 rounded-full shrink-0 text-xs"
+        className="label self-start rounded-full px-2 py-1 text-xs sm:shrink-0"
         style={{
           background:
             item.status === "CURRENT"
@@ -233,9 +233,15 @@ export default function Experience() {
           "linear-gradient(180deg, rgba(14,8,3,0.985) 0%, rgba(4,2,1,0.995) 100%)",
       }}
     >
-      <GradientOrb x="80%" y="20%" size={500} color="#ffb347" opacity={0.035} />
+      <GradientOrb
+        x="80%"
+        y="20%"
+        size={mobileLayout ? 320 : 500}
+        color="#ffb347"
+        opacity={0.035}
+      />
 
-      <div className="px-8 md:px-16 pt-24 pb-0">
+      <div className="px-5 pb-0 pt-20 sm:px-8 md:px-16 md:pt-24">
         <div className="flex items-center gap-4 mb-4">
           <span className="index-num">04</span>
           <div className="rule flex-1" />
@@ -253,14 +259,14 @@ export default function Experience() {
       </div>
 
       {mobileLayout ? (
-        <div className="px-8 md:px-16 py-12 grid grid-cols-1 gap-4">
+        <div className="grid grid-cols-1 gap-4 px-5 py-10 sm:px-8 md:px-16 md:py-12">
           {experience.map((item, index) => (
             <div
               key={item.id}
               ref={(element) => {
                 cardRefs.current[index] = element;
               }}
-              className="p-6 rounded-2xl relative overflow-hidden"
+              className="relative overflow-hidden rounded-2xl p-5 md:p-6"
               style={{
                 background: "var(--dim)",
                 border: "1px solid rgba(240,237,230,0.07)",
@@ -488,9 +494,12 @@ export default function Experience() {
         }
       `}</style>
 
-      <div className="px-8 md:px-16 pt-20 mb-24">
-        <div ref={highlightHeadRef} className="flex items-center gap-6 mb-12">
-          <div className="h-rule rule flex-1" />
+      <div className="mb-20 px-5 pt-16 sm:px-8 md:px-16 md:pt-20 md:mb-24">
+        <div
+          ref={highlightHeadRef}
+          className={`mb-10 flex ${mobileLayout ? "flex-col items-start gap-3" : "items-center gap-6"} md:mb-12`}
+        >
+          <div className={`h-rule rule ${mobileLayout ? "hidden" : "flex-1"}`} />
           <h3
             style={{
               fontFamily: "'Bebas Neue',sans-serif",
@@ -502,7 +511,7 @@ export default function Experience() {
           >
             Strengths
           </h3>
-          <div className="h-rule rule flex-1" />
+          <div className={`h-rule rule ${mobileLayout ? "hidden" : "flex-1"}`} />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -558,9 +567,12 @@ export default function Experience() {
         </div>
       </div>
 
-      <div className="px-8 md:px-16 pb-24">
-        <div ref={certHeadRef} className="flex items-center gap-6 mb-12">
-          <div className="h-rule rule flex-1" />
+      <div className="px-5 pb-20 sm:px-8 md:px-16 md:pb-24">
+        <div
+          ref={certHeadRef}
+          className={`mb-10 flex ${mobileLayout ? "flex-col items-start gap-3" : "items-center gap-6"} md:mb-12`}
+        >
+          <div className={`h-rule rule ${mobileLayout ? "hidden" : "flex-1"}`} />
           <h3
             style={{
               fontFamily: "'Bebas Neue',sans-serif",
@@ -572,7 +584,7 @@ export default function Experience() {
           >
             Certificates
           </h3>
-          <div className="h-rule rule flex-1" />
+          <div className={`h-rule rule ${mobileLayout ? "hidden" : "flex-1"}`} />
         </div>
 
         {certifications.map((certificate, index) => (
@@ -581,7 +593,7 @@ export default function Experience() {
             ref={(element) => {
               certRefs.current[index] = element;
             }}
-            className="flex items-center justify-between py-5 border-t"
+            className="flex flex-col gap-4 border-t py-5 sm:flex-row sm:items-center sm:justify-between"
             style={{
               borderColor: "rgba(240,237,230,0.07)",
               transition: "padding-left 0.35s,background 0.3s",
@@ -595,7 +607,7 @@ export default function Experience() {
               event.currentTarget.style.background = "transparent";
             }}
           >
-            <div className="flex items-center gap-6">
+            <div className="flex items-start gap-4 sm:items-center sm:gap-6">
               <span className="index-num" style={{ minWidth: 28 }}>
                 {String(index + 1).padStart(2, "0")}
               </span>
