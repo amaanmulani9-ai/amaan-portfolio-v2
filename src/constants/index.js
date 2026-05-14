@@ -1,125 +1,204 @@
+const baseAsset = import.meta.env.BASE_URL;
+
 export const profile = {
   brand: "Amaan.dev",
   firstName: "Amaan",
   lastName: "Mulani",
   fullName: "Amaan Asif Mulani",
-  title: "Entry-level Web Developer and Full-Stack Developer",
-  availability: "Open to internships, entry-level roles, and project collaborations",
-  badge: "M.Sc. IT + Live Projects",
+  title: "Full-Stack Developer",
+  availability: "Open to internships, entry-level roles, and freelance builds",
+  badge: "React, Next.js, Python, FastAPI",
   summary:
-    "Entry-level Web Developer and Full-Stack Developer with hands-on experience in Python automation, React and Vite interfaces, Next.js applications, and TypeScript-based frontend work. Skilled in building responsive web applications, API-backed tools, and desktop experiences using FastAPI, PyQt, Tailwind CSS, and modern JavaScript. Comfortable with backend logic, interface development, and practical project delivery. Currently pursuing an M.Sc. in Information Technology.",
+    "Full-stack developer focused on React, Next.js, Python automation, and API-backed products. I build responsive interfaces, developer tools, and production-style web apps with a strong bias for shipping practical work.",
   shortSummary:
-    "Building responsive web apps, API-backed tools, and desktop experiences with Python, React, Next.js, FastAPI, and modern frontend tooling.",
+    "Building responsive interfaces, Python-backed systems, and polished product experiences with React, Next.js, FastAPI, and modern frontend tooling.",
   email: "Amaanmulani9@gmail.com",
   phone: "+91 93248 32187",
   location: "Malad (E), Mumbai 97, India",
   languages: "English, Hindi, Marathi",
   githubUser: "amaanmulani9-ai",
-  portrait: `${import.meta.env.BASE_URL}images/6d716bb9-8ebd-4609-a01f-048fb89038ee.png`,
-  resumeHref: "mailto:Amaanmulani9@gmail.com?subject=Resume%20Request",
-  resumeLabel: "Request Resume",
+  portrait: `${baseAsset}images/6d716bb9-8ebd-4609-a01f-048fb89038ee.png`,
+  resumeHref: `${baseAsset}Amaan-Mulani-Resume.pdf`,
+  resumeLabel: "Download Resume",
+  resumeFileName: "Amaan-Mulani-Resume.pdf",
+  resumeRequestHref:
+    "mailto:Amaanmulani9@gmail.com?subject=Hiring%20Discussion%20from%20Portfolio",
   footerTagline:
-    "Portfolio focused on full-stack development, cloud services, and practical project work.",
+    "Portfolio focused on production-style frontend work, Python systems, and practical shipping.",
 };
 
 export const heroRoles = [
-  "ENTRY-LEVEL FULL-STACK DEVELOPER",
-  "PYTHON AUTOMATION BUILDER",
+  "FULL-STACK PRODUCT BUILDER",
   "REACT + NEXT.JS DEVELOPER",
-  "FASTAPI + FRONTEND ENGINEER",
+  "PYTHON AUTOMATION ENGINEER",
+  "API-BACKED APP BUILDER",
 ];
 
 export const heroPoints = [
-  "Hands-on work across Python automation, React and Vite interfaces, Next.js builds, and TypeScript-based frontend projects.",
-  "Builds responsive web experiences, desktop tools, and API-backed systems with FastAPI, Tailwind CSS, PyQt, and modern JavaScript.",
-  "Recent projects include JARVIS desktop automation, a medical store platform, portfolio rebuilds, and fan-experience web apps.",
+  "Curated work across React, Next.js, FastAPI, Vite, and Python automation instead of template-style mock projects.",
+  "Comfortable owning product UI, backend integration, developer experience, and the details needed to ship responsive web apps.",
+  "Recent builds include multilingual ML tooling, hackathon systems, desktop automation, and high-polish frontend experiences.",
+];
+
+export const proofMetrics = [
+  { value: "05", label: "Featured builds" },
+  { value: "15+", label: "Public repos" },
+  { value: "08", label: "Bootcamps" },
+  { value: "03", label: "Spoken languages" },
 ];
 
 export const professionalFacts = [
   {
     label: "Role",
-    value: "Entry-level Web Developer / Full-Stack Developer",
+    value: "Full-stack developer with a frontend-first product mindset",
   },
   {
     label: "Location",
     value: profile.location,
   },
   {
-    label: "Languages",
-    value: profile.languages,
+    label: "Focus",
+    value: "React, Next.js, Python automation, APIs, and polished shipping work",
   },
 ];
 
 export const aboutPanels = [
   {
-    title: "Development profile",
+    title: "Frontend that feels finished",
     description:
-      "Comfortable working across frontend interfaces, Python automation, API integration, and shipping-focused development. The profile now reflects practical work in React, Next.js, Vite, FastAPI, PyQt, Tailwind CSS, TypeScript, and modern JavaScript.",
+      "I like interfaces that feel deliberate: clear hierarchy, smooth motion, responsive behavior, and content that explains the product fast.",
   },
   {
-    title: "Hands-on project range",
+    title: "Backend and automation support",
     description:
-      "Recent project work includes desktop automation with JARVIS, a medical store platform, portfolio rebuilds, fan-experience web apps, and API-backed tools that continue evolving through live GitHub updates.",
+      "Alongside UI work, I build Python-backed services, desktop workflows, and integration layers that make the frontend useful in real-world use cases.",
   },
 ];
 
 export const aboutStats = [
-  { n: 5, suffix: "+", label: "Projects Built" },
+  { n: 5, suffix: "", label: "Featured Projects" },
+  { n: 15, suffix: "+", label: "Public Repos" },
   { n: 8, suffix: "", label: "Bootcamps" },
   { n: 3, suffix: "", label: "Languages" },
-  { n: 4, suffix: "+", label: "Core Domains" },
 ];
 
-export const projects = [
+export const featuredProjects = [
   {
     id: "01",
-    name: "MEDISCANAI",
-    full: "MediScanAI - Intelligent Diagnosis System",
-    description:
-      "Developed an AI-based diagnostic system that processed 200+ medical images, supported 20+ test uploads per session, and improved diagnostic reliability with neural-network-based classification and anomaly detection.",
-    href: "",
-    tags: ["AI/ML", "Medical imaging", "Flask app"],
-    type: "Python | TensorFlow | OpenCV | Flask",
+    slug: "truthlens",
+    title: "TruthLens",
+    tagline: "Multilingual fake-news detection tool with readable model output.",
+    problem:
+      "Build a fake-news detection experience that feels usable to non-technical users instead of exposing a raw classifier response.",
+    role:
+      "Designed the web product layer around the model workflow, including frontend structure, prediction UX, and API-backed interaction.",
+    outcomes: [
+      "Wrapped the trained classifier in a Flask API with health checks and prediction endpoints.",
+      "Added language detection, translation support, and localized UI paths for broader input handling.",
+      "Exposed confidence, warnings, and input-quality states so the prediction result feels interpretable.",
+    ],
+    stack: [
+      "Python",
+      "Flask",
+      "React",
+      "Vite",
+      "scikit-learn",
+      "Framer Motion",
+    ],
+    githubUrl: "https://github.com/amaanmulani9-ai/truthlens-fake-news-detector",
+    imageSrc: `${baseAsset}images/projects/truthlens.png`,
+    imageAlt: "TruthLens repository preview",
   },
   {
     id: "02",
-    name: "FINANCE TRACKER",
-    full: "Finance Tracking App",
-    description:
-      "Built a full-stack Django application to manage 500+ financial transactions, including loans, repayments, balances, dashboards, filters, and responsive views for desktop and mobile.",
-    href: "",
-    tags: ["Django", "Dashboards", "Transaction tracking"],
-    type: "Python | Django | HTML | CSS",
+    slug: "friday",
+    title: "FRIDAY",
+    tagline: "Hackathon build for real-time person intelligence and agent-assisted research.",
+    problem:
+      "Create a system that can move from camera input to researched dossier output with live progress, while degrading gracefully when services are missing.",
+    role:
+      "Contributed to the full-stack product direction across frontend experience, research flow, and system-level orchestration for the hackathon build.",
+    outcomes: [
+      "Connected FastAPI, Next.js 16, Convex, and browser-agent workflows into a single product pipeline.",
+      "Structured the app so optional services fail gracefully instead of breaking the whole experience.",
+      "Streamed research updates into a live corkboard-style dossier UI to make the system feel active and explainable.",
+    ],
+    stack: [
+      "FastAPI",
+      "Next.js",
+      "Tailwind CSS",
+      "Convex",
+      "Browser Use",
+      "Framer Motion",
+    ],
+    githubUrl: "https://github.com/amaanmulani9-ai/FRIDAY",
+    imageSrc: `${baseAsset}images/projects/friday.png`,
+    imageAlt: "FRIDAY repository preview",
   },
   {
     id: "03",
-    name: "JEWELLERY CMS",
-    full: "Jewellery Shop Management System",
-    description:
-      "Created a real-world management system for inventory, billing, customer records, role-based admin access, and 300+ product records with optimized MySQL queries.",
-    href: "",
-    tags: ["Inventory", "Admin auth", "CRUD"],
-    type: "PHP | MySQL | HTML | CSS | JavaScript",
+    slug: "jarvis",
+    title: "JARVIS",
+    tagline: "Windows desktop automation assistant with voice flow and sci-fi PyQt UI.",
+    problem:
+      "Turn desktop automation into a guided assistant experience instead of a collection of disconnected scripts and commands.",
+    role:
+      "Built the product surface around voice input, command execution, and visual feedback while clarifying the active runtime path for the project.",
+    outcomes: [
+      "Combined PyQt, speech input, desktop automation, and text-to-speech into a single assistant workflow.",
+      "Added wake-trigger fallbacks and command-normalization support so the assistant remains usable in more environments.",
+      "Documented the startup path, module responsibilities, and known limitations to make the project easier to understand and extend.",
+    ],
+    stack: [
+      "Python",
+      "PyQt",
+      "SpeechRecognition",
+      "Ollama",
+      "Desktop Automation",
+    ],
+    githubUrl: "https://github.com/amaanmulani9-ai/JARVIS-main",
+    demoUrl: "https://go.screenpal.com/watch/cOni25n3P82",
+    imageSrc: `${baseAsset}images/projects/jarvis.png`,
+    imageAlt: "JARVIS repository preview",
   },
   {
     id: "04",
-    name: "SHOPPING SITE",
-    full: "Shopping Website Development",
-    description:
-      "Developed a shopping website with product CRUD, secure user registration and login, account management, and responsive storefront interfaces across devices.",
-    href: "",
-    tags: ["E-commerce", "Authentication", "Responsive UI"],
-    type: "PHP | MySQL | Bootstrap",
+    slug: "ipl-rcb",
+    title: "IPL-RCB",
+    tagline: "Fan-experience frontend built around fixtures, visuals, and bold team identity.",
+    problem:
+      "Create a single-page sports experience that feels energetic and branded while staying structured and responsive.",
+    role:
+      "Owned the frontend presentation, motion, and section composition for a themed RCB web experience.",
+    outcomes: [
+      "Built a trophy-led hero and section system around fixtures, squad visuals, updates, and merchandise.",
+      "Used reveal effects, strong typography, and locally served imagery to create a memorable single-page flow.",
+      "Shipped a responsive experience with structured content and clear source-link sections.",
+    ],
+    stack: ["React", "Vite", "CSS", "Responsive UI"],
+    githubUrl: "https://github.com/amaanmulani9-ai/IPL-RCB-clone",
+    demoUrl: "https://ipl-rcb-shadowfox.vercel.app",
+    imageSrc: `${baseAsset}images/projects/ipl-rcb.png`,
+    imageAlt: "IPL-RCB repository preview",
   },
   {
     id: "05",
-    name: "FIRE ALERT BOT",
-    full: "Arduino Fire Detecting and SMS Alert Robot Car",
-    description:
-      "Designed a robot car that detects fire with flame and temperature sensors, navigates toward the source, triggers suppression logic, and sends real-time SMS alerts through a GSM module.",
-    href: "",
-    tags: ["Robotics", "IoT", "Automation"],
-    type: "Arduino | Embedded C/C++ | GSM",
+    slug: "momos",
+    title: "Momos",
+    tagline: "Next.js food-ordering concept with editorial styling and product-led interaction.",
+    problem:
+      "Move beyond a plain food menu layout by designing an ordering experience with stronger hierarchy, art direction, and interactive browsing.",
+    role:
+      "Shaped the homepage experience, product presentation, and visual storytelling for a modern food-ordering concept.",
+    outcomes: [
+      "Built a Next.js storefront flow around featured products, browsing, and ordering-oriented UI patterns.",
+      "Used bold imagery, motion, and editorial copy treatment to give the product a stronger visual identity.",
+      "Structured the page around reusable product and restaurant data instead of hardcoded one-off sections.",
+    ],
+    stack: ["Next.js", "TypeScript", "React", "Motion", "Product UI"],
+    githubUrl: "https://github.com/amaanmulani9-ai/momos",
+    imageSrc: `${baseAsset}images/projects/momos.png`,
+    imageAlt: "Momos repository preview",
   },
 ];
 
@@ -132,7 +211,7 @@ export const experience = [
     period: "Pursuing",
     status: "CURRENT",
     desc:
-      "Currently pursuing postgraduate study while continuing to build web, cloud, and application projects with a practical full-stack focus.",
+      "Pursuing postgraduate study while continuing to build frontend products, API-backed tools, and production-style portfolio work.",
   },
   {
     id: "02",
@@ -142,7 +221,7 @@ export const experience = [
     period: "Aug 2021 - Jun 2024",
     status: "COMPLETED",
     desc:
-      "Completed undergraduate study with a CGPA of 7.06 / 10 and a strong foundation in programming, databases, application development, and problem solving.",
+      "Completed undergraduate study with a CGPA of 7.06 / 10 and a solid base in programming, databases, and application development.",
   },
   {
     id: "03",
@@ -152,35 +231,35 @@ export const experience = [
     period: "Aug 2019 - Apr 2021",
     status: "COMPLETED",
     desc:
-      "Completed higher secondary education with 75.5 percent, building the academic base for later specialization in information technology.",
+      "Completed higher secondary education with 75.5 percent, building the foundation for later specialization in information technology.",
   },
 ];
 
 export const achievements = [
   {
     icon: "01",
-    title: "Python automation",
-    sub: "Desktop flows, utility scripting, voice logic, and practical tooling",
+    title: "Frontend execution",
+    sub: "Responsive React, Next.js, Vite, Tailwind CSS, and polished interaction work",
   },
   {
     icon: "02",
-    title: "Modern frontend",
-    sub: "React, Next.js, Vite, TypeScript, Tailwind CSS, and responsive UI work",
+    title: "Python systems",
+    sub: "Automation flows, APIs, utility scripting, and practical desktop tooling",
   },
   {
     icon: "03",
-    title: "API-backed systems",
-    sub: "FastAPI, auth flows, structured backend logic, and project integrations",
+    title: "Product shaping",
+    sub: "Turning rough ideas into clearer UX, stronger positioning, and shipping-focused interfaces",
   },
   {
     icon: "04",
-    title: "Live project shipping",
-    sub: "Portfolio rebuilds, deployed demos, and public GitHub repository updates",
+    title: "API-backed apps",
+    sub: "FastAPI, auth flows, structured backend logic, and integration-heavy projects",
   },
   {
     icon: "05",
-    title: "Practical delivery",
-    sub: "Clean interfaces, usable workflows, and source-backed projects that keep evolving",
+    title: "Public proof",
+    sub: "Live GitHub repositories, demo links, and work that can be explored directly",
   },
 ];
 
@@ -206,8 +285,7 @@ export const skills = [
   "PyQt",
   "Tailwind CSS",
   "REST APIs",
-  "HTML5",
-  "CSS3",
+  "Framer Motion",
   "Responsive UI",
   "Frontend Architecture",
   "MongoDB",
@@ -221,32 +299,35 @@ export const skills = [
 ];
 
 export const socials = [
-  { name: "GitHub", href: "https://github.com/amaanmulani9-ai" },
   {
-    name: "Instagram",
-    href: "https://www.instagram.com/amaan.mulani_?igsh=b3E2bWdyNjZldndn",
+    name: "GitHub",
+    href: "https://github.com/amaanmulani9-ai",
   },
   {
     name: "LinkedIn",
     href: "https://www.linkedin.com/in/amaan-m-b51773312",
   },
+  {
+    name: "Instagram",
+    href: "https://www.instagram.com/amaan.mulani_?igsh=b3E2bWdyNjZldndn",
+  },
 ];
 
 export const marqueeTech = [
+  "React",
+  "Next.js",
   "Python",
-  "Django",
-  "ReactJS",
-  "Flask",
+  "FastAPI",
+  "TypeScript",
+  "Tailwind CSS",
   "REST APIs",
-  "MySQL",
-  "PostgreSQL",
   "MongoDB",
-  "AWS",
   "GitHub",
+  "Vercel",
   "Linux",
-  "Arduino",
-  "Raspberry Pi",
-  "JavaScript",
+  "PyQt",
+  "Automation",
+  "Product UI",
 ];
 
 export const contactMethods = [
@@ -268,7 +349,7 @@ export const contactMethods = [
 ];
 
 export const resumeHighlights = [
-  "Entry-level Web Developer / Full-Stack Developer profile",
-  "Projects across Django, Flask, PHP, React, AWS, and Arduino",
-  "Includes education, skills, certificates, and contact details",
+  "Downloadable PDF resume with education, projects, skills, and contact details",
+  "Work across React, Next.js, Python automation, FastAPI, and product-style interfaces",
+  "Open to internships, entry-level roles, freelance builds, and project collaborations",
 ];

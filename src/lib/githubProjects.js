@@ -5,8 +5,10 @@ const GITHUB_PROFILE_CACHE_KEY = "portfolio-live-github-profile-v1";
 const GITHUB_CACHE_TTL = 1000 * 60 * 30;
 const EXCLUDED_REPOS = new Set([
   "amaan-portfolio-v2",
+  "amaan-portfolio-v1-new",
   "password-manager-vault",
   "hello-world",
+  "portfoliobyamaan",
 ]);
 
 const GENERIC_HEADINGS = new Set([

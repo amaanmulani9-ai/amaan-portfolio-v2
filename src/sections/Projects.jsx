@@ -4,6 +4,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import TextScramble from "../components/TextScramble";
 import GradientOrb from "../components/GradientOrb";
+import { featuredProjects } from "../constants";
 import {
   GITHUB_PROFILE_URL,
   GITHUB_USER,
@@ -44,18 +45,228 @@ const formatGithubDate = (value) => {
   }).format(new Date(value));
 };
 
+const ProjectVisual = ({ project }) => {
+  const [imageMissing, setImageMissing] = useState(false);
+
+  return (
+    <div
+      className="relative overflow-hidden rounded-[28px]"
+      style={{
+        background:
+          "linear-gradient(160deg, rgba(28,17,7,0.98) 0%, rgba(12,8,3,0.98) 100%)",
+        border: "1px solid rgba(255,158,74,0.12)",
+        boxShadow: "0 30px 70px rgba(0,0,0,0.32)",
+      }}
+    >
+      {!imageMissing && project.imageSrc ? (
+        <img
+          src={project.imageSrc}
+          alt={project.imageAlt}
+          className="block aspect-[4/3] w-full object-cover"
+          loading="lazy"
+          onError={() => setImageMissing(true)}
+        />
+      ) : (
+        <div
+          className="aspect-[4/3] w-full p-7 md:p-9 flex flex-col justify-between"
+          style={{
+            background:
+              "radial-gradient(circle at 18% 18%, rgba(255,217,119,0.16), transparent 28%), linear-gradient(135deg, rgba(255,158,74,0.16), rgba(18,11,4,0.96))",
+          }}
+        >
+          <span className="label" style={{ color: "rgba(240,237,230,0.48)" }}>
+            Project preview coming soon
+          </span>
+          <div>
+            <p
+              style={{
+                fontFamily: "'Bebas Neue', sans-serif",
+                fontSize: "clamp(34px,5vw,62px)",
+                lineHeight: 0.95,
+                color: "#F0EDE6",
+              }}
+            >
+              {project.title}
+            </p>
+            <p className="mt-3" style={{ color: "rgba(240,237,230,0.46)", lineHeight: 1.7 }}>
+              {project.tagline}
+            </p>
+          </div>
+        </div>
+      )}
+
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 p-5 md:p-6"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(8,5,2,0) 0%, rgba(8,5,2,0.9) 82%, rgba(8,5,2,0.97) 100%)",
+        }}
+      >
+        <div className="flex flex-wrap items-center gap-3">
+          <span
+            className="label rounded-full px-3 py-2"
+            style={{
+              background: "rgba(244,194,79,0.14)",
+              border: "1px solid rgba(255,158,74,0.2)",
+              color: "rgba(240,237,230,0.68)",
+            }}
+          >
+            {imageMissing ? "Visual fallback" : "Repository preview"}
+          </span>
+          <span className="label" style={{ color: "rgba(240,237,230,0.36)" }}>
+            {project.slug}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const FeaturedProjectCard = ({ project, index, registerRef }) => {
+  const mediaOrder = index % 2 === 0 ? "lg:order-1" : "lg:order-2";
+  const textOrder = index % 2 === 0 ? "lg:order-2" : "lg:order-1";
+
+  return (
+    <article
+      ref={registerRef}
+      className="grid gap-8 border-t pt-10 md:gap-10 md:pt-12 lg:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)] lg:items-center"
+      style={{ borderColor: "rgba(240,237,230,0.08)" }}
+    >
+      <div className={mediaOrder}>
+        <ProjectVisual project={project} />
+      </div>
+
+      <div className={textOrder}>
+        <div className="flex items-center gap-3 mb-4">
+          <span className="index-num">{project.id}</span>
+          <span
+            className="label rounded-full px-3 py-2"
+            style={{
+              background: "rgba(240,237,230,0.04)",
+              border: "1px solid rgba(240,237,230,0.08)",
+              color: "rgba(240,237,230,0.48)",
+            }}
+          >
+            Featured project
+          </span>
+        </div>
+
+        <h3
+          className="text-offwhite uppercase"
+          style={{
+            fontFamily: "'Bebas Neue', sans-serif",
+            fontSize: "clamp(42px,6vw,84px)",
+            lineHeight: 0.94,
+            letterSpacing: "0.02em",
+          }}
+        >
+          {project.title}
+        </h3>
+        <p
+          className="mt-4 max-w-2xl"
+          style={{
+            fontSize: "clamp(18px,2vw,24px)",
+            lineHeight: 1.6,
+            color: "rgba(240,237,230,0.56)",
+          }}
+        >
+          {project.tagline}
+        </p>
+
+        <div className="mt-8 grid gap-6 md:grid-cols-2">
+          <div>
+            <p className="label mb-3" style={{ color: "rgba(240,237,230,0.34)" }}>
+              Problem
+            </p>
+            <p style={{ color: "#F0EDE6", lineHeight: 1.8 }}>{project.problem}</p>
+          </div>
+          <div>
+            <p className="label mb-3" style={{ color: "rgba(240,237,230,0.34)" }}>
+              Role
+            </p>
+            <p style={{ color: "#F0EDE6", lineHeight: 1.8 }}>{project.role}</p>
+          </div>
+        </div>
+
+        <div className="mt-8">
+          <p className="label mb-3" style={{ color: "rgba(240,237,230,0.34)" }}>
+            What shipped
+          </p>
+          <ul className="space-y-3">
+            {project.outcomes.map((item) => (
+              <li
+                key={item}
+                style={{
+                  color: "rgba(240,237,230,0.58)",
+                  lineHeight: 1.75,
+                }}
+              >
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="mt-8 flex flex-wrap gap-2">
+          {project.stack.map((item) => (
+            <span
+              key={item}
+              className="label rounded-full px-3 py-2"
+              style={{
+                background: "rgba(240,237,230,0.04)",
+                border: "1px solid rgba(240,237,230,0.07)",
+                color: "rgba(240,237,230,0.44)",
+              }}
+            >
+              {item}
+            </span>
+          ))}
+        </div>
+
+        <div className="mt-9 flex flex-wrap gap-4">
+          <a
+            href={project.githubUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="label inline-flex items-center gap-3 rounded-full px-5 py-3 transition-all duration-300"
+            style={{
+              color: "var(--charcoal)",
+              background: "linear-gradient(135deg, #ffd977 0%, #f4c24f 100%)",
+              border: "1px solid rgba(255,217,119,0.85)",
+              boxShadow: "0 16px 40px rgba(244,194,79,0.18)",
+            }}
+            data-cursor
+          >
+            View GitHub {"->"}
+          </a>
+
+          {project.demoUrl && (
+            <a
+              href={project.demoUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="label inline-flex items-center gap-3 rounded-full px-5 py-3 transition-all duration-300"
+              style={{
+                color: "rgba(240,237,230,0.54)",
+                background: "rgba(240,237,230,0.02)",
+                border: "1px solid rgba(240,237,230,0.08)",
+              }}
+              data-cursor
+            >
+              View Demo {"->"}
+            </a>
+          )}
+        </div>
+      </div>
+    </article>
+  );
+};
+
 const Projects = () => {
-  const sectionRef = useRef(null);
-  const rowRefs = useRef([]);
-  const overlayRefs = useRef([]);
-  const previewRef = useRef(null);
+  const cardRefs = useRef([]);
   const githubBoxRef = useRef(null);
   const contributionBoxRef = useRef(null);
-  const numRefs = useRef([]);
-  const moveX = useRef(null);
-  const moveY = useRef(null);
-  const [hovered, setHovered] = useState(null);
-  const [projects, setProjects] = useState([]);
+  const [liveProjects, setLiveProjects] = useState([]);
   const [githubProfile, setGithubProfile] = useState(null);
   const [status, setStatus] = useState("loading");
   const [mobileLayout, setMobileLayout] = useState(() =>
@@ -67,18 +278,18 @@ const Projects = () => {
 
     const hydrateProjects = async () => {
       try {
-        const [liveProjects, liveProfile] = await Promise.all([
+        const [repoFeed, liveProfile] = await Promise.all([
           loadGithubProjects({ signal: controller.signal }),
           loadGithubProfile({ signal: controller.signal }).catch(() => null),
         ]);
 
-        setProjects(liveProjects);
+        setLiveProjects(repoFeed);
         setGithubProfile(liveProfile);
         setStatus("ready");
       } catch (error) {
         if (error.name === "AbortError") return;
 
-        setProjects([]);
+        setLiveProjects([]);
         setStatus("error");
       }
     };
@@ -104,61 +315,24 @@ const Projects = () => {
   }, []);
 
   useGSAP(() => {
-    if (!projects.length) return;
-
-    rowRefs.current.forEach((element) => {
-      if (!element) return;
-
+    cardRefs.current.filter(Boolean).forEach((element, index) => {
       gsap.fromTo(
         element,
-        { x: -60, opacity: 0 },
+        { y: 44, opacity: 0 },
         {
-          x: 0,
+          y: 0,
           opacity: 1,
-          duration: 1,
+          duration: 0.9,
+          delay: index * 0.08,
           ease: "power3.out",
           scrollTrigger: {
             trigger: element,
-            start: "top 94%",
+            start: "top 88%",
             toggleActions: "play none none none",
           },
         }
       );
     });
-
-    numRefs.current.forEach((element) => {
-      if (!element) return;
-
-      gsap.fromTo(
-        element,
-        { opacity: 0, scale: 2 },
-        {
-          opacity: 1,
-          scale: 1,
-          duration: 0.7,
-          ease: "expo.out",
-          scrollTrigger: {
-            trigger: element,
-            start: "top 94%",
-            toggleActions: "play none none none",
-          },
-        }
-      );
-    });
-
-    if (!mobileLayout && previewRef.current) {
-      moveX.current = gsap.quickTo(previewRef.current, "x", {
-        duration: 1.1,
-        ease: "power3.out",
-      });
-      moveY.current = gsap.quickTo(previewRef.current, "y", {
-        duration: 1.3,
-        ease: "power3.out",
-      });
-    } else {
-      moveX.current = null;
-      moveY.current = null;
-    }
 
     if (githubBoxRef.current) {
       gsap.fromTo(
@@ -195,66 +369,18 @@ const Projects = () => {
         }
       );
     }
-  }, { dependencies: [projects.length, mobileLayout] });
+  }, { dependencies: [liveProjects.length, mobileLayout] });
 
-  const onEnter = (index) => {
-    if (window.innerWidth < 768) return;
-    if (!projects[index]) return;
-
-    setHovered(index);
-
-    gsap.fromTo(
-      overlayRefs.current[index],
-      { scaleY: 0, transformOrigin: "bottom" },
-      { scaleY: 1, duration: 0.28, ease: "power2.out" }
-    );
-
-    gsap.to(previewRef.current, {
-      autoAlpha: 1,
-      scale: 1,
-      duration: 0.35,
-      ease: "power2.out",
-    });
-  };
-
-  const onLeave = (index) => {
-    if (window.innerWidth < 768) return;
-    if (!overlayRefs.current[index]) return;
-
-    setHovered(null);
-
-    gsap.to(overlayRefs.current[index], {
-      scaleY: 0,
-      transformOrigin: "bottom",
-      duration: 0.22,
-      ease: "power2.in",
-    });
-
-    gsap.to(previewRef.current, {
-      autoAlpha: 0,
-      scale: 0.92,
-      duration: 0.25,
-    });
-  };
-
-  const onMove = (event) => {
-    if (!moveX.current || window.innerWidth < 768) return;
-
-    moveX.current(event.clientX + 24);
-    moveY.current(event.clientY - 60);
-  };
-
-  const activeProject = hovered !== null ? projects[hovered] : null;
-  const latestProject = projects[0] ?? null;
-  const liveStackCount = new Set(projects.flatMap((project) => project.tags)).size;
+  const latestProject = liveProjects[0] ?? null;
+  const liveStackCount = new Set(liveProjects.flatMap((project) => project.tags)).size;
   const githubMetrics = [
     {
       label: "Public repos",
-      value: String(githubProfile?.publicRepos ?? projects.length).padStart(2, "0"),
+      value: String(githubProfile?.publicRepos ?? liveProjects.length).padStart(2, "0"),
     },
     {
-      label: "Live projects",
-      value: String(projects.length).padStart(2, "0"),
+      label: "Live repos tracked",
+      value: String(liveProjects.length).padStart(2, "0"),
     },
     {
       label: "Stacks tracked",
@@ -265,7 +391,6 @@ const Projects = () => {
   return (
     <section
       id="projects"
-      ref={sectionRef}
       className="px-5 py-20 sm:px-8 md:px-16 md:py-24"
       style={{
         background:
@@ -284,177 +409,43 @@ const Projects = () => {
       <div className="flex items-center gap-4 mb-4">
         <span className="index-num">03</span>
         <div className="rule flex-1" />
-        <span className="label text-muted">Selected Work</span>
+        <span className="label text-muted">Featured Work</span>
       </div>
 
       <div style={{ overflow: "hidden" }}>
         <TextScramble
-          text="Projects"
+          text="Selected Projects"
           tag="h2"
-          className="display-lg text-offwhite uppercase mb-12 md:mb-16"
+          className="display-lg text-offwhite uppercase mb-8 md:mb-10"
           style={{ display: "block" }}
           scrambleOnMount
         />
       </div>
 
-      <div className="relative" onMouseMove={onMove}>
-        {status === "loading" && (
-          <p className="label text-muted pb-6">Loading live GitHub repositories...</p>
-        )}
+      <p
+        className="max-w-3xl"
+        style={{
+          color: "rgba(240,237,230,0.5)",
+          lineHeight: 1.8,
+          fontSize: "clamp(16px,1.8vw,20px)",
+        }}
+      >
+        A curated set of projects that show how I approach product UI, Python-backed
+        systems, automation, and presentation quality. GitHub stays below as live proof,
+        but this section leads with the work I would want a recruiter to review first.
+      </p>
 
-        {status === "error" && (
-          <p className="label text-muted pb-6">
-            Live GitHub projects could not be loaded right now.
-          </p>
-        )}
-
-        {status === "ready" && projects.length === 0 && (
-          <p className="label text-muted pb-6">No public GitHub repositories found.</p>
-        )}
-
-        {projects.map((project, index) => {
-          const Tag = "a";
-
-          return (
-            <Tag
-              key={project.id}
-              href={project.href}
-              target="_blank"
-              rel="noreferrer"
-              ref={(element) => {
-                rowRefs.current[index] = element;
-              }}
-              className="group relative flex flex-col gap-4 border-t py-5 md:flex-row md:items-center md:justify-between md:gap-6 md:py-6"
-              style={{
-                borderColor: "rgba(240,237,230,0.06)",
-                cursor: mobileLayout ? "pointer" : "none",
-              }}
-              onMouseEnter={() => onEnter(index)}
-              onMouseLeave={() => onLeave(index)}
-              data-cursor={!mobileLayout ? true : undefined}
-            >
-              <div
-                ref={(element) => {
-                  overlayRefs.current[index] = element;
-                }}
-                className="absolute inset-0 pointer-events-none"
-                style={{
-                  background: "var(--dim)",
-                  transform: "scaleY(0)",
-                  transformOrigin: "bottom",
-                  zIndex: 0,
-                }}
-              />
-
-              <div className="relative z-10 flex min-w-0 flex-1 items-start gap-4 md:items-center md:gap-6">
-                <span
-                  ref={(element) => {
-                    numRefs.current[index] = element;
-                  }}
-                  className="index-num shrink-0 transition-colors duration-300 group-hover:text-lime"
-                >
-                  {project.id}
-                </span>
-
-                <div className="min-w-0">
-                  <h3
-                    className="text-offwhite uppercase transition-colors duration-300 group-hover:text-lime md:truncate"
-                    style={{
-                      fontFamily: "'Bebas Neue', sans-serif",
-                      fontSize: "clamp(28px,4.5vw,64px)",
-                      lineHeight: 1,
-                    }}
-                  >
-                    {project.name}
-                  </h3>
-                  <p className="label text-muted mt-2">{project.type}</p>
-                </div>
-              </div>
-
-              <div className="relative z-10 flex w-full flex-wrap items-center justify-between gap-3 shrink-0 md:w-auto md:flex-nowrap md:justify-end md:gap-6">
-                <div className="flex flex-wrap gap-2 md:justify-end md:max-w-xs">
-                  {project.tags.slice(0, 3).map((tag) => (
-                    <span
-                      key={tag}
-                      className="label text-muted px-3 py-1 rounded-full"
-                      style={{
-                        background: "rgba(240,237,230,0.04)",
-                        border: "1px solid rgba(240,237,230,0.07)",
-                      }}
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                <span
-                  className="text-xl transition-all duration-300 md:self-auto"
-                  style={{ color: "rgba(240,237,230,0.2)" }}
-                  onMouseEnter={(event) => {
-                    event.target.style.color = "var(--lime)";
-                    event.target.style.transform = "translate(3px,-3px)";
-                  }}
-                  onMouseLeave={(event) => {
-                    event.target.style.color = "rgba(240,237,230,0.2)";
-                    event.target.style.transform = "translate(0,0)";
-                  }}
-                >
-                  {"->"}
-                </span>
-              </div>
-            </Tag>
-          );
-        })}
-
-        <div className="rule" />
-
-        <div
-          ref={previewRef}
-          className="fixed top-0 left-0 z-50 pointer-events-none hidden md:flex flex-col justify-end rounded-2xl overflow-hidden"
-          style={{
-            width: 380,
-            height: 240,
-            opacity: 0,
-            scale: 0.92,
-            background: "var(--dim)",
-            border: "1px solid rgba(255,158,74,0.18)",
-            padding: 0,
-          }}
-        >
-          {activeProject && (
-            <div
-              className="w-full h-full flex flex-col justify-end p-7"
-              style={{
-                background:
-                  "linear-gradient(to top, rgba(8,5,2,0.97) 35%, rgba(23,13,5,0.52))",
-              }}
-            >
-              <p className="label text-lime mb-2">{activeProject.type}</p>
-              <h4
-                style={{
-                  fontFamily: "'Bebas Neue', sans-serif",
-                  fontSize: 30,
-                  color: "#F0EDE6",
-                  textTransform: "uppercase",
-                  lineHeight: 1,
-                }}
-              >
-                {activeProject.full}
-              </h4>
-              <p
-                className="mt-2"
-                style={{
-                  fontFamily: "'DM Sans', sans-serif",
-                  fontSize: 13,
-                  color: "rgba(240,237,230,0.45)",
-                  lineHeight: 1.5,
-                }}
-              >
-                {activeProject.description.slice(0, 120)}...
-              </p>
-            </div>
-          )}
-        </div>
+      <div className="mt-12 grid gap-12 md:mt-14 md:gap-14">
+        {featuredProjects.map((project, index) => (
+          <FeaturedProjectCard
+            key={project.slug}
+            project={project}
+            index={index}
+            registerRef={(element) => {
+              cardRefs.current[index] = element;
+            }}
+          />
+        ))}
       </div>
 
       {GITHUB_PROFILE_URL && (
@@ -463,7 +454,7 @@ const Projects = () => {
           href={GITHUB_PROFILE_URL}
           target="_blank"
           rel="noreferrer"
-          className="group relative mt-14 block overflow-hidden rounded-[28px] p-5 md:p-8"
+          className="group relative mt-16 block overflow-hidden rounded-[28px] p-5 md:mt-20 md:p-8"
           data-cursor={!mobileLayout ? true : undefined}
           style={{
             background:
@@ -492,7 +483,7 @@ const Projects = () => {
                   }}
                 />
                 <span className="label" style={{ color: "rgba(240,237,230,0.42)" }}>
-                  LIVE GITHUB
+                  MORE ON GITHUB
                 </span>
               </div>
 
@@ -543,7 +534,9 @@ const Projects = () => {
                     }}
                   >
                     @{githubProfile?.login || GITHUB_USER} {"  "}
-                    {latestProject ? `Latest push ${formatGithubDate(latestProject.pushedAt)}` : "Live synced"}
+                    {latestProject
+                      ? `Latest push ${formatGithubDate(latestProject.pushedAt)}`
+                      : "Live synced"}
                   </p>
                 </div>
               </div>
@@ -555,9 +548,21 @@ const Projects = () => {
                   lineHeight: 1.8,
                 }}
               >
-                Open the live GitHub profile to browse every public repository, recent pushes,
-                and the source behind the projects shown in this section.
+                Browse the wider repository history, recent pushes, and additional project
+                experiments beyond the featured case studies above.
               </p>
+
+              {status === "loading" && (
+                <p className="label mt-5" style={{ color: "rgba(240,237,230,0.3)" }}>
+                  Syncing live GitHub repositories...
+                </p>
+              )}
+
+              {status === "error" && (
+                <p className="label mt-5" style={{ color: "rgba(240,237,230,0.3)" }}>
+                  GitHub could not be loaded right now, but the public profile link still works.
+                </p>
+              )}
             </div>
 
             <div className="flex flex-col gap-6 xl:items-end">
@@ -609,7 +614,7 @@ const Projects = () => {
 
       <div
         ref={contributionBoxRef}
-          className="relative mt-6 overflow-hidden rounded-[28px] p-5 md:p-8"
+        className="relative mt-6 overflow-hidden rounded-[28px] p-5 md:p-8"
         style={{
           background: "rgba(8, 10, 14, 0.72)",
           border: "1px solid rgba(240,237,230,0.08)",
@@ -648,8 +653,8 @@ const Projects = () => {
                   lineHeight: 1.8,
                 }}
               >
-                Live contribution activity pulled from the GitHub calendar for the last twelve
-                months.
+                Live contribution activity pulled from the GitHub calendar for the last
+                twelve months.
               </p>
             </div>
 

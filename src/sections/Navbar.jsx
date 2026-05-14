@@ -9,9 +9,9 @@ import isMobile from "../utils/isMobile";
 const sections = [
   { id: "home", label: "home" },
   { id: "about", label: "summary" },
-  { id: "projects", label: "projects" },
-  { id: "experience", label: "education" },
-  { id: "contact", label: "contact" },
+  { id: "projects", label: "featured work" },
+  { id: "experience", label: "background" },
+  { id: "contact", label: "hire" },
 ];
 
 const Navbar = () => {
@@ -169,7 +169,9 @@ const Navbar = () => {
                 }}
                 data-cursor={!mobileLayout ? true : undefined}
               >
-                <span className="index-num mr-6 shrink-0">{String(index + 1).padStart(2, "0")}</span>
+                <span className="index-num mr-6 shrink-0">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
                 <span
                   className="flex-1 uppercase transition-colors duration-300 group-hover:text-lime"
                   style={{

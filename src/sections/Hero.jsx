@@ -6,14 +6,22 @@ import MagneticBtn from "../components/MagneticBtn";
 import GradientOrb from "../components/GradientOrb";
 import TextScramble from "../components/TextScramble";
 import isMobile from "../utils/isMobile";
-import { heroPoints, heroRoles, profile, socials } from "../constants";
+import { heroPoints, heroRoles, profile, proofMetrics, socials } from "../constants";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const githubLink = socials.find(({ name }) => name === "GitHub");
+const linkedInLink = socials.find(({ name }) => name === "LinkedIn");
+
 const actionLinks = [
-  socials.find(({ name }) => name === "GitHub"),
-  socials.find(({ name }) => name === "LinkedIn"),
-  { name: profile.resumeLabel, href: profile.resumeHref },
+  {
+    name: profile.resumeLabel,
+    href: profile.resumeHref,
+    kind: "primary",
+    download: profile.resumeFileName,
+  },
+  githubLink ? { ...githubLink, kind: "secondary" } : null,
+  linkedInLink ? { ...linkedInLink, kind: "secondary" } : null,
 ].filter(Boolean);
 
 const Hero = () => {
@@ -29,6 +37,7 @@ const Hero = () => {
   const mobileMetaRef = useRef(null);
   const statusRef = useRef(null);
   const socialsRef = useRef(null);
+  const proofRef = useRef(null);
   const [mobileLayout, setMobileLayout] = useState(() =>
     typeof window !== "undefined" ? isMobile() : false
   );
@@ -137,6 +146,13 @@ const Hero = () => {
       { y: 30, opacity: 0 },
       { y: 0, opacity: 1, duration: 0.7, ease: "power3.out" },
       "-=0.6"
+    );
+
+    timeline.fromTo(
+      proofRef.current,
+      { y: 24, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.7, ease: "power3.out" },
+      "-=0.45"
     );
 
     if (scrollRef.current) {
@@ -372,7 +388,7 @@ const Hero = () => {
 
         <div className="max-w-2xl">
           <p className="body-lg" style={{ color: "rgba(240,237,230,0.52)", lineHeight: 1.8 }}>
-            {profile.summary}
+            {profile.shortSummary}
           </p>
           <ul className="mt-5 space-y-3">
             {heroPoints.map((point) => (
@@ -395,33 +411,87 @@ const Hero = () => {
             <MagneticBtn key={link.name} strength={0.4}>
               <a
                 href={link.href}
-                target={link.href.startsWith("http") ? "_blank" : "_self"}
-                rel={link.href.startsWith("http") ? "noreferrer" : undefined}
+                target={link.kind === "primary" ? "_self" : "_blank"}
+                rel={link.kind === "primary" ? undefined : "noreferrer"}
+                download={link.download}
                 className="label block rounded-full transition-all duration-300"
                 style={{
                   padding: mobileLayout ? "11px 14px" : "8px 16px",
-                  color: "rgba(240,237,230,0.35)",
-                  border: "1px solid rgba(240,237,230,0.08)",
-                  background: "rgba(240,237,230,0.02)",
+                  color:
+                    link.kind === "primary" ? "var(--charcoal)" : "rgba(240,237,230,0.35)",
+                  border:
+                    link.kind === "primary"
+                      ? "1px solid rgba(255,217,119,0.85)"
+                      : "1px solid rgba(240,237,230,0.08)",
+                  background:
+                    link.kind === "primary"
+                      ? "linear-gradient(135deg, #ffd977 0%, #f4c24f 100%)"
+                      : "rgba(240,237,230,0.02)",
+                  boxShadow:
+                    link.kind === "primary" ? "0 18px 40px rgba(244,194,79,0.18)" : "none",
                 }}
                 onMouseEnter={(event) => {
-                  event.currentTarget.style.color = "var(--lime)";
+                  event.currentTarget.style.color =
+                    link.kind === "primary" ? "var(--charcoal)" : "var(--lime)";
                   event.currentTarget.style.borderColor = "rgba(255,158,74,0.35)";
-                  event.currentTarget.style.background = "rgba(244,194,79,0.08)";
+                  event.currentTarget.style.background =
+                    link.kind === "primary"
+                      ? "linear-gradient(135deg, #ffe49a 0%, #f4c24f 100%)"
+                      : "rgba(244,194,79,0.08)";
                   event.currentTarget.style.letterSpacing = "0.28em";
+                  event.currentTarget.style.transform = "translateY(-2px)";
                 }}
                 onMouseLeave={(event) => {
-                  event.currentTarget.style.color = "rgba(240,237,230,0.35)";
-                  event.currentTarget.style.borderColor = "rgba(240,237,230,0.08)";
-                  event.currentTarget.style.background = "rgba(240,237,230,0.02)";
+                  event.currentTarget.style.color =
+                    link.kind === "primary" ? "var(--charcoal)" : "rgba(240,237,230,0.35)";
+                  event.currentTarget.style.borderColor =
+                    link.kind === "primary"
+                      ? "rgba(255,217,119,0.85)"
+                      : "rgba(240,237,230,0.08)";
+                  event.currentTarget.style.background =
+                    link.kind === "primary"
+                      ? "linear-gradient(135deg, #ffd977 0%, #f4c24f 100%)"
+                      : "rgba(240,237,230,0.02)";
                   event.currentTarget.style.letterSpacing = "0.2em";
+                  event.currentTarget.style.transform = "translateY(0)";
                 }}
               >
-                {link.name} {link.href.startsWith("mailto:") ? "->" : "->"}
+                {link.name} {"->"}
               </a>
             </MagneticBtn>
           ))}
         </div>
+      </div>
+
+      <div
+        ref={proofRef}
+        className="relative z-10 mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4"
+      >
+        {proofMetrics.map((metric) => (
+          <div
+            key={metric.label}
+            className="rounded-2xl px-4 py-4 md:px-5"
+            style={{
+              background: "rgba(240,237,230,0.03)",
+              border: "1px solid rgba(240,237,230,0.08)",
+              backdropFilter: "blur(10px)",
+            }}
+          >
+            <p
+              style={{
+                fontFamily: "'Bebas Neue', sans-serif",
+                fontSize: mobileLayout ? 30 : 40,
+                lineHeight: 1,
+                color: "#F0EDE6",
+              }}
+            >
+              {metric.value}
+            </p>
+            <p className="label mt-2" style={{ color: "rgba(240,237,230,0.4)" }}>
+              {metric.label}
+            </p>
+          </div>
+        ))}
       </div>
 
       {!mobileLayout && (

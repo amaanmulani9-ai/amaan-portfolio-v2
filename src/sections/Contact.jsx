@@ -24,18 +24,35 @@ const ICONS = {
       <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
     </svg>
   ),
-  Instagram: (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
-    </svg>
-  ),
 };
 
 const HANDLES = {
   GitHub: "amaanmulani9-ai",
   LinkedIn: "amaan-m-b51773312",
-  Instagram: "@amaan.mulani_",
 };
+
+const primarySocials = socials.filter(
+  (social) => social.name === "GitHub" || social.name === "LinkedIn"
+);
+
+const hiringActions = [
+  {
+    label: profile.resumeLabel,
+    href: profile.resumeHref,
+    download: profile.resumeFileName,
+    primary: true,
+  },
+  {
+    label: "View GitHub",
+    href: primarySocials.find((social) => social.name === "GitHub")?.href,
+    external: true,
+  },
+  {
+    label: "LinkedIn",
+    href: primarySocials.find((social) => social.name === "LinkedIn")?.href,
+    external: true,
+  },
+].filter((item) => item.href);
 
 const SocialCard = ({ social }) => {
   const cardRef = useRef(null);
@@ -197,6 +214,7 @@ const Contact = () => {
   const pinnedRef = useRef(null);
   const bigTextRef = useRef(null);
   const dotRef = useRef(null);
+  const actionsRef = useRef(null);
   const infoSectionRef = useRef(null);
   const footerRef = useRef(null);
   const [mobileLayout, setMobileLayout] = useState(() =>
@@ -243,6 +261,24 @@ const Contact = () => {
       duration: 0.9,
       ease: "power1.inOut",
     });
+
+    if (actionsRef.current) {
+      gsap.fromTo(
+        actionsRef.current,
+        { y: 24, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: actionsRef.current,
+            start: "top 90%",
+            toggleActions: "play none none none",
+          },
+        }
+      );
+    }
 
     if (infoSectionRef.current) {
       gsap.fromTo(
@@ -300,9 +336,9 @@ const Contact = () => {
         />
 
         <div ref={bigTextRef} className="flex min-h-[45svh] flex-1 items-center py-10 md:py-12" style={{ zIndex: 1 }}>
-          <div>
+          <div className="max-w-4xl">
             <SplitLines
-              text={`LET'S\nCONNECT.`}
+              text={`LET'S\nBUILD.`}
               className="display-xl text-offwhite uppercase leading-none select-none"
               trigger={false}
               delay={0}
@@ -315,12 +351,51 @@ const Contact = () => {
               />
               <span className="label text-muted">{profile.availability}</span>
             </div>
+
+            <p
+              className="mt-6 max-w-2xl"
+              style={{
+                color: "rgba(240,237,230,0.48)",
+                lineHeight: 1.8,
+                fontSize: "clamp(15px,1.6vw,19px)",
+              }}
+            >
+              If you are hiring for internships, entry-level roles, or freelance builds, the
+              fastest next step is the resume download or a direct message on email or LinkedIn.
+            </p>
+
+            <div ref={actionsRef} className="mt-8 flex flex-wrap gap-3 md:mt-10 md:gap-4">
+              {hiringActions.map((action) => (
+                <a
+                  key={action.label}
+                  href={action.href}
+                  target={action.external ? "_blank" : "_self"}
+                  rel={action.external ? "noreferrer" : undefined}
+                  download={action.download}
+                  className="label inline-flex items-center gap-3 rounded-full px-5 py-3 transition-all duration-300"
+                  style={{
+                    color: action.primary ? "var(--charcoal)" : "rgba(240,237,230,0.54)",
+                    background: action.primary
+                      ? "linear-gradient(135deg, #ffd977 0%, #f4c24f 100%)"
+                      : "rgba(240,237,230,0.02)",
+                    border: action.primary
+                      ? "1px solid rgba(255,217,119,0.85)"
+                      : "1px solid rgba(240,237,230,0.08)",
+                    boxShadow: action.primary ? "0 16px 40px rgba(244,194,79,0.18)" : "none",
+                    textDecoration: "none",
+                  }}
+                  data-cursor
+                >
+                  {action.label} {"->"}
+                </a>
+              ))}
+            </div>
           </div>
         </div>
 
         <div className="flex flex-col items-start justify-between gap-5 md:flex-row md:items-end md:gap-6" style={{ zIndex: 1 }}>
           <div className="flex flex-wrap gap-4">
-            {socials.map((social) => (
+            {primarySocials.map((social) => (
               <a
                 key={social.name}
                 href={social.href}
@@ -367,7 +442,7 @@ const Contact = () => {
         <div className="mb-12 flex items-center gap-4 md:mb-16">
           <span className="index-num">05</span>
           <div className="rule flex-1" />
-          <span className="label text-muted">Contact</span>
+          <span className="label text-muted">Hire</span>
         </div>
 
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-24">
@@ -380,31 +455,45 @@ const Contact = () => {
                 lineHeight: 1,
               }}
             >
-              Reach Out
+              Hiring For Practical Full-Stack Work
             </h3>
             <p className="body-lg" style={{ color: "rgba(240,237,230,0.38)", lineHeight: 1.8 }}>
-              If you want to discuss internships, entry-level opportunities, collaborations, or project work, the fastest way to reach Amaan is by email or phone.
+              I am looking for internships, entry-level roles, and freelance work where I can
+              contribute across product UI, frontend execution, Python-backed systems, and
+              shipping-focused delivery.
             </p>
-            <div className="mt-8 flex items-center gap-3">
-              <div style={{ width: 20, height: 1, background: "var(--lime)" }} />
+
+            <div className="mt-8 flex flex-wrap gap-3">
               <a
                 href={`mailto:${profile.email}`}
-                className="label break-all transition-colors duration-300"
-                style={{ color: "rgba(240,237,230,0.4)" }}
-                onMouseEnter={(event) => {
-                  event.target.style.color = "var(--lime)";
-                }}
-                onMouseLeave={(event) => {
-                  event.target.style.color = "rgba(240,237,230,0.4)";
+                className="label inline-flex items-center gap-3 rounded-full px-5 py-3"
+                style={{
+                  color: "var(--charcoal)",
+                  background: "linear-gradient(135deg, #ffd977 0%, #f4c24f 100%)",
+                  border: "1px solid rgba(255,217,119,0.85)",
+                  textDecoration: "none",
                 }}
                 data-cursor
               >
-                {profile.email}
+                Email Me {"->"}
+              </a>
+              <a
+                href={`tel:${profile.phone.replace(/\s+/g, "")}`}
+                className="label inline-flex items-center gap-3 rounded-full px-5 py-3"
+                style={{
+                  color: "rgba(240,237,230,0.54)",
+                  background: "rgba(240,237,230,0.02)",
+                  border: "1px solid rgba(240,237,230,0.08)",
+                  textDecoration: "none",
+                }}
+                data-cursor
+              >
+                Call {"->"}
               </a>
             </div>
 
             <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {socials.map((social) => (
+              {primarySocials.map((social) => (
                 <SocialCard key={social.name} social={social} />
               ))}
             </div>
@@ -433,7 +522,7 @@ const Contact = () => {
                 border: "1px solid rgba(240,237,230,0.07)",
               }}
             >
-              <span className="label text-muted">Resume</span>
+              <span className="label text-muted">Resume & recruiter notes</span>
               <h4
                 className="text-offwhite uppercase mt-4"
                 style={{
@@ -442,10 +531,11 @@ const Contact = () => {
                   lineHeight: 1,
                 }}
               >
-                Profile Summary
+                Ready To Review
               </h4>
               <p className="mt-4" style={{ color: "rgba(240,237,230,0.42)", lineHeight: 1.8 }}>
-                The live site references a resume, but no public PDF is currently available from that deployment. This section keeps the portfolio honest and points visitors to request the latest copy directly.
+                The main resume action now downloads directly, while email remains open for
+                follow-up questions, interviews, or requests for the latest version.
               </p>
               <ul className="mt-6 space-y-3">
                 {resumeHighlights.map((highlight) => (
@@ -454,18 +544,40 @@ const Contact = () => {
                   </li>
                 ))}
               </ul>
-              <a
-                href={profile.resumeHref}
-                className="inline-flex items-center gap-3 mt-8 label"
-                style={{
-                  color: "var(--lime)",
-                  textDecoration: "none",
-                  letterSpacing: "0.24em",
-                }}
-                data-cursor
-              >
-                {profile.resumeLabel} {"->"}
-              </a>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <a
+                  href={profile.resumeHref}
+                  download={profile.resumeFileName}
+                  className="inline-flex items-center gap-3 label"
+                  style={{
+                    color: "var(--charcoal)",
+                    textDecoration: "none",
+                    letterSpacing: "0.24em",
+                    background: "linear-gradient(135deg, #ffd977 0%, #f4c24f 100%)",
+                    border: "1px solid rgba(255,217,119,0.85)",
+                    borderRadius: 999,
+                    padding: "12px 18px",
+                  }}
+                  data-cursor
+                >
+                  {profile.resumeLabel} {"->"}
+                </a>
+                <a
+                  href={profile.resumeRequestHref}
+                  className="inline-flex items-center gap-3 label"
+                  style={{
+                    color: "rgba(240,237,230,0.48)",
+                    textDecoration: "none",
+                    letterSpacing: "0.22em",
+                    border: "1px solid rgba(240,237,230,0.08)",
+                    borderRadius: 999,
+                    padding: "12px 18px",
+                  }}
+                  data-cursor
+                >
+                  Request Update {"->"}
+                </a>
+              </div>
             </div>
           </div>
         </div>

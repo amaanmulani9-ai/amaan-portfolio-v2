@@ -182,7 +182,7 @@ const About = () => {
       <div className="flex items-center gap-4 mb-4">
         <span className="index-num">02</span>
         <div className="rule flex-1" />
-        <span className="label text-muted">Profile</span>
+        <span className="label text-muted">Summary</span>
       </div>
 
       <TextScramble
@@ -265,17 +265,17 @@ const About = () => {
               style={{ marginLeft: "-8vw", marginRight: "-8vw" }}
             >
               <div ref={driftRef} className="whitespace-nowrap">
-              <span
-                style={{
-                  fontFamily: "'Bebas Neue', sans-serif",
-                  fontSize: "clamp(48px,7vw,96px)",
-                  color: "#F0EDE6",
-                  opacity: 0.035,
-                  textTransform: "uppercase",
-                }}
-              >
-                PYTHON · DJANGO · REACT · AWS · APIS · DATABASES · ROBOTICS ·
-                DEPLOYMENT · PYTHON · DJANGO · REACT · AWS ·
+                <span
+                  style={{
+                    fontFamily: "'Bebas Neue', sans-serif",
+                    fontSize: "clamp(48px,7vw,96px)",
+                    color: "#F0EDE6",
+                    opacity: 0.035,
+                    textTransform: "uppercase",
+                  }}
+                >
+                  PYTHON · NEXT.JS · REACT · FASTAPI · APIS · PRODUCT UI · AUTOMATION ·
+                  SHIPPING · PYTHON · NEXT.JS · REACT · FASTAPI ·
                 </span>
               </div>
             </div>
@@ -298,7 +298,7 @@ const About = () => {
                 marginBottom: 14,
               }}
             >
-              Quick Facts
+              Recruiter Snapshot
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {professionalFacts.map((fact) => (
@@ -328,7 +328,7 @@ const About = () => {
                 marginBottom: 14,
               }}
             >
-              Profile Highlights
+              How I Work
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {aboutPanels.map((panel) => (

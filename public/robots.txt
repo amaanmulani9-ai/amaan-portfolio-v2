@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://portfolio--adi.vercel.app/sitemap.xml
+Sitemap: https://amaan-portfolio-v2.vercel.app/sitemap.xml

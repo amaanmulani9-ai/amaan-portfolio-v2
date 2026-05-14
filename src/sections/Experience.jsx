@@ -245,11 +245,11 @@ export default function Experience() {
         <div className="flex items-center gap-4 mb-4">
           <span className="index-num">04</span>
           <div className="rule flex-1" />
-          <span className="label text-muted">Education</span>
+          <span className="label text-muted">Background</span>
         </div>
         <div style={{ overflow: "hidden" }}>
           <TextScramble
-            text="Education"
+            text="Education & Credentials"
             tag="h2"
             className="display-lg text-offwhite uppercase"
             style={{ display: "block" }}
